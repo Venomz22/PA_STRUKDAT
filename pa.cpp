@@ -1624,148 +1624,6 @@ void split(struct nodekantin* head, struct nodekantin** a, struct nodekantin** b
 }
 
 
-// Search User
-int SearchUser(node* head, int n){
-    int F0 = 0; 
-    int F1 = 1; 
-    int F = F0 + F1;
-    string arr[n];
-    while (F < n){
-        F0 = F1;
-        F1 = F;
-        F = F0 + F1;
-    } 
-    int i = 0;
-    node* tmp = head;
-    while(tmp->next != NULL){
-    	arr[i] = tmp->data.user; 
-    	tmp = tmp->next;
-    	i++;
-    }arr[i] = tmp->data.user;
-    
-    int offset = -1;
-    while (F > 1){
-        int i = min(offset + F0, n - 1);
-        if (arr[i] < user){
-            F = F1;
-            F1 = F0;
-            F0 = F - F1;
-            offset = i;
-        }
-        else if (arr[i] > user){
-            F = F0;
-            F1 = F1 - F0;
-            F0 = F - F1;
-        }
-        else return i;
-    }
-    if (F1 && arr[offset + 1] == user) return offset + 1;
-    return -1;
-}
-
-// Search Makanan
-int SearchMakanan(nodekantin* head, int n){
-    int F0 = 0; 
-    int F1 = 1; 
-    int F = F0 + F1;
-    string arr[n];
-    while (F < n){
-        F0 = F1;
-        F1 = F;
-        F = F0 + F1;
-    } 
-    int i = 0;
-    nodekantin* tmp = head;
-    while(tmp->next != NULL){
-    	arr[i] = tmp->data.makanan; 
-    	tmp = tmp->next;
-    	i++;
-    }arr[i] = tmp->data.makanan;
-    
-    int offset = -1;
-    while (F > 1){
-        int i = min(offset + F0, n - 1);
-        if (arr[i] < makanan){
-            F = F1;
-            F1 = F0;
-            F0 = F - F1;
-            offset = i;
-        }
-        else if (arr[i] > makanan){
-            F = F0;
-            F1 = F1 - F0;
-            F0 = F - F1;
-        }
-        else return i;
-    }
-    if (F1 && arr[offset + 1] == makanan) return offset + 1;
-    return -1;
-}
-
-//fungsi traversal untuk pencarian data user
-void trvuser(node* head, int n, int indeks){
-	node* tmp = head;
-	int i=0;
-	while(i<n){
-		tmp = tmp->next;
-		i++;		
-	}
-	
-	while(tmp->data.user == user){
-		if(makanan == "N/A" && user == "N/A"){
-			tampil2(tmp, n); t++;
-		} else if(user != "N/A" && user== "N/A"){
-			if(tmp->data.user == user){
-				tampil2(tmp, n); t++;
-			}
-		} else if(user == "N/A" && user != "N/A"){
-			if(tmp->data.user == user){
-				tampil2(tmp, n); t++;
-			}
-		} else if(user != "N/A" && user != "N/A"){
-			if(tmp->data.user == user && tmp->data.user == user){
-				tampil2(tmp, n); t++;
-			}
-		}
-		if(tmp->next != NULL)
-			tmp = tmp->next;
-		else break;
-		n++;
-	}
-}
-
-//fungsi traversal untuk pencarian data makanan
-void trvmakanan(nodekantin* head, int n, int indeks){
-	nodekantin* tmp = head;
-	int i=0;
-	while(i<n){
-		tmp = tmp->next;
-		i++;		
-	}
-	
-	while(tmp->data.makanan == makanan){
-		if(makanan == "N/A" && makanan == "N/A"){
-			tampil2(tmp, n); t++;
-		} else if(makanan != "N/A" && makanan == "N/A"){
-			if(tmp->data.makanan == makanan){
-				tampil2(tmp, n); t++;
-			}
-		} else if(makanan == "N/A" && makanan != "N/A"){
-			if(tmp->data.makanan){
-				tampil2(tmp, n); t++;
-			}
-		} else if(tujuan != "N/A" && kelas != "N/A"){
-			if(tmp->data.makanan == makanan && tmp->data.makanan == makanan){
-				tampil2(tmp, n); t++;
-			}
-		}
-		if(tmp->next != NULL)
-			tmp = tmp->next;
-		else break;
-		n++;
-	}
-}
-
 
 int main() {
 	
@@ -2116,32 +1974,33 @@ int main() {
 							system("cls");
 				  			break;
 				  			} else if(submenu == 5){
-				  			cout<<"Melakukan Pencarian"; Sleep(100); system("CLS");
-							cout<<"Melakukan Pencarian."; Sleep(100); system("CLS");
-							cout<<"Melakukan Pencarian.."; Sleep(100); system("CLS");
-							cout<<"Melakukan Pencarian..."; Sleep(100); system("CLS");
-													
-							t = 0;
-							att = "makanan";
-							ascquickSort(kantinhead);
-							if(src == "fib")
-								n = SearchMakanan(kantinhead, indeks);
-							if(n > -1){
-								trv(head, n, indeks);
-								if(t == 0){
-									cout << "Data Tidak Ditemukan"; getch();
-								}
-								else
-									pilih(head, &idx, &saya, &indeks);
-							}
-							else if(n <= -1)
-								cout << "Data Tidak Ditemukan"; getch();							
-				            system("CLS");
-							break;
-				  			} else if(submenu == 6){
-				  				break;
-				  			}system("cls");
-				  			break;
+//				  			cout<<"Melakukan Pencarian"; Sleep(100); system("CLS");
+//							cout<<"Melakukan Pencarian."; Sleep(100); system("CLS");
+//							cout<<"Melakukan Pencarian.."; Sleep(100); system("CLS");
+//							cout<<"Melakukan Pencarian..."; Sleep(100); system("CLS");
+//													
+//							t = 0;
+//							att = "makanan";
+//							ascquickSort(kantinhead);
+//							if(src == "fib")
+//								n = SearchMakanan(kantinhead, indeks);
+//							if(n > -1){
+//								trv(head, n, indeks);
+//								if(t == 0){
+//									cout << "Data Tidak Ditemukan"; getch();
+//								}
+//								else
+//									pilih(head, &idx, &saya, &indeks);
+//							}
+//							else if(n <= -1)
+//								cout << "Data Tidak Ditemukan"; getch();							
+//				            system("CLS");
+//							break;
+//				  			} else if(submenu == 6){
+//				  				break;
+//				  			}system("cls");
+//				  			break;
+						}
 				  		case 4:
 				  			system("cls");
 				  			antrimakan(porsihead);
