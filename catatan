@@ -1,0 +1,32 @@
+library yg kami pakai disini ada 
+bits/stdc++.h = menginclude semua library umum
+iostream = menampilkan cin cout
+windows.h = untuk menggunakan fitur sleep dan pwarnaan pada program
+cstdlib = menyediakan perhitungan aritmatika
+iomanip = librayr manipulator pada program
+limits = menentukan sifat dari berbagai jenis variabl
+conio = menampilkan perintah getch, gotoxy
+math.h = sqrth/fungsi akar
+fstream = agar bisa melakukan ifstream ofstream
+using namespace std = agar tidak perlu 
+
+ifstream = memuat data atau load data
+ofstream = menyimpan data  atau save data
+
+
+disini kamu membuat 4 file external yaitu akun, pc, kantin, porsi
+csv akun = untuk memuat data akun yang pernah teregistrasi di dalam program ini
+csv pc = untuk memuat data pc yang pernah dibuat atau dimodif didalam program ini
+csv kantin = untuk memuat data kantin yang berisi makanan yang telah dipesan oleh pengguna didalam program ini
+csv porsi = untuk memuat data makanan yang telah dipesan oleh pengguna program
+
+gotoxy = agar bisa melakukan penempatan kursor dimana saja
+
+
+std::numeric_limits<std::streamsize>::max() = 
+
+
+
+
+
+
