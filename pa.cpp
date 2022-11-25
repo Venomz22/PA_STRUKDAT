@@ -77,7 +77,6 @@ string makanan;
 string harga;
 string att;
 
-
 //fungsi untuk menampilkan data struct
 void tampil2(node* tmp, int i) {
 	if(i%2 == 0){
@@ -145,51 +144,192 @@ void tampil(node* head, int* indeks){
 	}
 }
 
-void tampilkantin(nodekantin* headkantin, int* indeks){
-	
-	cout << "+-------------------------------+" << endl;
-	cout << "|          DAFTAR MENU          |" << endl;
-	cout << "+-------------------------------+" << endl;
-	int i=0;
-	nodekantin* tmp3 = headkantin;
-	while (tmp3 != NULL){
-		tampil3(tmp3, i);
-		tmp3 = tmp3->next;
-		i++;
+void pilihkantin(nodekantin* headkantin, int* indeks, nodeporsi** porsihead, nodeporsi** porsitail, string username) {
+	nodekantin* tmp = headkantin;
+	bool run = 1; int item = 1, porsi;
+	while(run){
+		
+		system("cls");
+		cout << "   +-------------------------------+" << endl;
+		cout << "   |          DAFTAR MENU          |" << endl;
+		cout << "   +-------------------------------+" << endl;
+		gotoXY(0, 3); cout << "   _________________________________";
+		gotoXY(0, 4); cout << "   |" << tmp->data.makanan; gotoXY(35, 4); cout << "|";
+		gotoXY(0, 5); cout << "<< |                               | >>";
+		gotoXY(0, 6); cout << "   |" << tmp->data.harga; gotoXY(35, 6); cout << "|";
+		gotoXY(0, 7); cout << "   |_______________________________|";
+		gotoXY(0, 8);cout << "pilih";
+		gotoXY(0, 9);cout << "kembali";
+		
+		color(240);
+		if(item == 1){
+			gotoXY(0, 8);cout << "pilih";
+		} else if(item == 2){
+			gotoXY(0, 9);cout << "kembali";
+		}color(7);
+		
+		system("pause>nul");
+		if(GetAsyncKeyState(VK_RIGHT) && tmp->next != NULL){ 
+			tmp = tmp->next;
+		}
+		if(GetAsyncKeyState(VK_LEFT) && tmp->prev != NULL){ 
+			tmp = tmp->prev;
+		}
+		if(GetAsyncKeyState(VK_UP) && item != 1){
+			item -= 1;
+		}
+		if(GetAsyncKeyState(VK_DOWN) && item != 2){
+			item += 1;
+		}		
+		if(GetAsyncKeyState(VK_RETURN) & 0x8000){
+			switch(item){
+				case 1:
+					if(username == "N/A"){
+						gotoXY(0, 10);cout << "Anda belum login!";
+						Sleep(500);
+						
+						return;
+					} else{
+					gotoXY(0, 10);cout << "Masukkan Jumlah Porsi: ";
+					cin >> porsi;
+					
+					nodeporsi* p = new nodeporsi;
+					p->data.harga = tmp->data.harga * porsi;
+					p->data.makanan = tmp->data.makanan;
+					p->data.porsi = porsi;
+					p->data.user = username;
+					p->data.status = "belum";
+					
+					if(*porsihead == NULL){
+						p->prev = NULL;
+						p->next = NULL;
+						*porsihead = p;
+						*porsitail = p;
+						(*porsitail)->prev = *porsitail;
+					} else {
+						(*porsitail)->next = p;
+						p->prev = *porsitail;
+						*porsitail = p;
+						p->next = NULL;
+					}
+				
+					cout << endl << 
+					"Terima Kasih Sudah Memesan, silahkan tunggu pesanan anda!"; Sleep(500);					
+					}
+				case 2:
+					return;
+			}
+		}	
 	}	
 }
 
-void regis(string* mode, string* username){
+void regis(string* mode, string* username) {
+	
 	cin.ignore();
 	string nama, pw, pw2;
 	system("CLS");
-	int run = 0;
-	do{ 
-		cout << "\nMasukkan Username Anda : "; getline(cin, nama);
-		int i=0;
-		for(; i<jumakun; i++){
-			if(acc[i].username == nama) {
-				run = 1;
-				break;
-			}
-			run = 0;
+	int item2 = 1, running = true;
+	u:
+	while(running) {
+		gotoXY(0, 0); cout << "+-------------------------------+";
+		gotoXY(0, 1); cout << "|          	REGIS		       |";
+		gotoXY(0, 2); cout << "+-------------------------------+";
+		gotoXY(0, 3); cout << "Username            :";
+		gotoXY(0, 4); cout << "Password            :";
+		gotoXY(0, 5); cout << "Konfirmasi Password :";
+		gotoXY(0, 6); cout << "Regis";
+		gotoXY(0, 7); cout << "Kembali";
+		gotoXY(0, 8); cout << "+-------------------------------+";
+		color(240);
+		if(item2 == 1){
+			gotoXY(0, 3); cout << "Username ";
+		} else if(item2 == 2){
+			gotoXY(0, 4); cout << "Password ";
+		} else if(item2 == 3){
+			gotoXY(0, 5); cout << "Konfirmasi Password ";
+		} else if(item2 == 4){
+			gotoXY(0, 6); cout << "Regis";
+		} else if(item2 == 5){
+			gotoXY(0, 7); cout << "Kembali";
+		} color(7); gotoXY(0,0);
+		system("pause>nul");
+		if(GetAsyncKeyState(VK_UP) && item2 != 1) {
+			item2 -= 1;
 		}
-		if(run) cout << "Username sudah digunakan!" << endl;
-	} while(run);
-	
-	cout << "Masukkan Kata Sandi : "; getline(cin, pw);
-	cout << "Konfirmasi Kata Sandi : "; getline(cin, pw2);
-	while(pw != pw2){
-		cout << "Konfirmasi kata sandi salah!" << endl;
-		cout << "Konfirmasi Kata Sandi : "; getline(cin, pw2);
+		if(GetAsyncKeyState(VK_DOWN) && item2 != 5){
+			item2 += 1;
+		}
+		if(GetAsyncKeyState(VK_RETURN) & 0x8000){
+			if(item2 == 1){
+				gotoXY(23, 3); getline(cin, nama);
+			} else if(item2 == 2){
+				gotoXY(23, 4); getline(cin, pw);
+			} else if(item2 == 3){
+				gotoXY(23, 5); getline(cin, pw2);
+			} else if(item2 == 4){
+				if((nama == "" || pw == "") || pw2 == "") {
+					gotoXY(0, 9); cout << "Isi data dengan Lengkap!   " << endl;
+					goto u;
+				}
+				int run = 0;
+				int i=0;
+				for(; i<jumakun; i++){
+					if(acc[i].username == nama) {
+						run = 1;
+						break;
+					}
+					run = 0;
+				}
+				if(run) {
+					gotoXY(0, 9); cout << "Username sudah digunakan!   " << endl;
+					goto u;
+				}
+				else if(pw != pw2){
+					gotoXY(0, 9); cout << "Konfirmasi kata sandi salah!" << endl;
+					goto u;
+				} else {
+					gotoXY(0, 9);     cout << "Registrasi Berhasil!         "  << endl;Sleep(500);
+					acc[jumakun].username = nama;
+					acc[jumakun].password = pw;
+					acc[jumakun].mode = "user";
+					jumakun++;
+					*mode = "user";
+					*username = nama;
+					return;
+				}
+			} else if(item2 == 5){
+				return;
+			}
+		}
 	}
-	cout << "Registrasi Berhasil!"  << endl;Sleep(500);
-	acc[jumakun].username = nama;
-	acc[jumakun].password = pw;
-	acc[jumakun].mode = "user";
-	jumakun++;
-	*mode = "user";
-	*username = nama;
+	
+//	int run = 0;
+//	do{ 
+//		cout << "\nMasukkan Username Anda : "; getline(cin, nama);
+//		int i=0;
+//		for(; i<jumakun; i++){
+//			if(acc[i].username == nama) {
+//				run = 1;
+//				break;
+//			}
+//			run = 0;
+//		}
+//		if(run) cout << "Username sudah digunakan!" << endl;
+//	} while(run);
+//	
+//	cout << "Masukkan Kata Sandi : "; getline(cin, pw);
+//	cout << "Konfirmasi Kata Sandi : "; getline(cin, pw2);
+//	while(pw != pw2){
+//		cout << "Konfirmasi kata sandi salah!" << endl;
+//		cout << "Konfirmasi Kata Sandi : "; getline(cin, pw2);
+//	}
+//	cout << "Registrasi Berhasil!"  << endl;Sleep(500);
+//	acc[jumakun].username = nama;
+//	acc[jumakun].password = pw;
+//	acc[jumakun].mode = "user";
+//	jumakun++;
+//	*mode = "user";
+//	*username = nama;
 }
 
 //fungsi login untuk beralih ke admin maupun user
@@ -260,8 +400,9 @@ void login(string* mode, string* username) {
 
 void pilihpc(string username, node* head) {
 	int no, jam; string nama = username;
-	cout << "Masukkan nomor PC: "; cin >> no;
-	cout << "Masukkan jam: "; cin >> jam;
+	cout << "--------------------" << endl;
+	cout << "| Masukkan nomor PC: "; cin >> no;
+	cout << "| Masukkan jam: "; cin >> jam;
 	node* tmp = head;
 	int i=1;
 	while(i<no){
@@ -275,6 +416,20 @@ void pilihpc(string username, node* head) {
 	} else {
 		cout << "PC Masih digunakan!";
 	}
+}
+
+void tampilkantin(nodekantin* headkantin, int* indeks){
+	
+	cout << "+-------------------------------+" << endl;
+	cout << "|          DAFTAR MENU          |" << endl;
+	cout << "+-------------------------------+" << endl;
+	int i=0;
+	nodekantin* tmp3 = headkantin;
+	while (tmp3 != NULL){
+		tampil3(tmp3, i);
+		tmp3 = tmp3->next;
+		i++;
+	}	
 }
 
 void pilihmakan(string username, nodekantin* kantinhead, nodeporsi** porsihead, nodeporsi** porsitail) {
@@ -294,7 +449,7 @@ void pilihmakan(string username, nodekantin* kantinhead, nodeporsi** porsihead, 
 	p->data.makanan = tmp->data.makanan;
 	p->data.porsi = porsi;
 	p->data.user = username;
-	p->data.status = "Belum";
+	p->data.status = "belum";
 	
 	if(*porsihead == NULL){
 		p->prev = NULL;
@@ -1129,6 +1284,7 @@ void simpanporsi(nodeporsi* head){
 	porsiku.close();
 }
 
+
 //QuickSort
 
 // Fungsi untuk mengembalikan akhir dari linked list
@@ -1288,52 +1444,10 @@ void split(struct nodekantin* head, struct nodekantin** a, struct nodekantin** b
 }
 
 
-// SEARCH makanan
-int fibonacciSearch(nodekantin* head, int n){
-    int F0 = 0; 
-    int F1 = 1; 
-    int F = F0 + F1;
-    string arr[n];
-    while (F < n){
-        F0 = F1;
-        F1 = F;
-        F = F0 + F1;
-    }
-    int i = 0;
-    nodekantin* tmp = head;
-    while(tmp->next != NULL){
-    	arr[i] = tmp->data.makanan;
-    	tmp = tmp->next;
-    	i++;
-    }arr[i] = tmp->data.makanan;
-    
-    int offset = -1;
-    while (F > 1){
-        int i = min(offset + F0, n - 1);
-        if (arr[i] < makanan){
-            F = F1;
-            F1 = F0;
-            F0 = F - F1;
-            offset = i;
-        }
-        else if (arr[i] > makanan){
-            F = F0;
-            F1 = F1 - F0;
-            F0 = F - F1;
-        }
-        else return i;
-    }
-    if (F1 && arr[offset + 1] == makanan) return offset + 1;
-    return -1;
-}
-
-
 int main() {
-	
 	
 	acc[0].username = "admin"; acc[0].password = "1"; acc[0].mode = "admin";
 	jumakun = 1;
-
 	
 	int indeks = 0, indeksmenu = 0, c = 0, hasilcari, totall = 0;
 	
@@ -1365,16 +1479,16 @@ int main() {
 			int cari, x=1, y=5, item=1, item2, x2, y2, n; bool run;
 //			gotoXY(x, y); cout << ">";
 			while(true){
-				gotoXY(0, 0); cout << "_________________\n";
-				gotoXY(0, 1); cout << "|               |\n";
-			  	gotoXY(0, 2); cout << "|   MENU USER   |\n";
-			  	gotoXY(0, 3); cout << "|_______________|\n";
-			  	gotoXY(0, 4); cout << "|               |\n";
-				gotoXY(0, 5); cout << "|  1. Login     |\n";
-			  	gotoXY(0, 6); cout << "|  2. Regis     |\n";
-			  	gotoXY(0, 7); cout << "|  3. Sewa PC   |\n";
-			  	gotoXY(0, 8); cout << "|  4. Kantin    |\n";
-			  	gotoXY(0, 9); cout << "|  5. Tagihan   |\n";
+				gotoXY(0, 0); cout <<  "_________________\n";
+				gotoXY(0, 1); cout <<  "|               |\n";
+			  	gotoXY(0, 2); cout <<  "|   MENU USER   |\n";
+			  	gotoXY(0, 3); cout <<  "|_______________|\n";
+			  	gotoXY(0, 4); cout <<  "|               |\n";
+				gotoXY(0, 5); cout <<  "|  1. Login     |\n";
+			  	gotoXY(0, 6); cout <<  "|  2. Regis     |\n";
+			  	gotoXY(0, 7); cout <<  "|  3. Sewa PC   |\n";
+			  	gotoXY(0, 8); cout <<  "|  4. Kantin    |\n";
+			  	gotoXY(0, 9); cout <<  "|  5. Tagihan   |\n";
 			  	gotoXY(0, 10); cout << "|  6. Log Out   |\n";
 			  	gotoXY(0, 11); cout << "|  7. Keluar    |\n";
 			  	gotoXY(0, 12); cout << "|_______________|\n\n";
@@ -1403,10 +1517,10 @@ int main() {
 				if(GetAsyncKeyState(VK_UP) && y != 5){
 //					gotoXY(x, y); cout << " ";
 					y-=1;
-					item-=1;			
+					item-=1;
 				}
-				if(GetAsyncKeyState(VK_RETURN) & 0x8000){
-				  	switch (item){
+				if(GetAsyncKeyState(VK_RETURN) & 0x8000) {
+				  	switch (item) {
 				  		case 1:
 				  			system("cls");
 				  			login(&mode , &username);system("cls");
@@ -1428,22 +1542,21 @@ int main() {
 				  			system("cls");
 							break;
 				  		case 4:system("cls");
-				  			tampilkantin(kantinhead, &indeks);
-				  			cout << "\n1. Pesan Makanan\n";
-							cout << "\n2. Cari Menu\n";  
-				  			cout << "\n3. Urutkan Menu\n"; 
-				  			cout << " \npilih : ";
-							cin >> submenu;
-							system("cls");
-				  			if(submenu == 1){
-				  				if(username == "N/A"){
-							  		cout << "\n Silahkan login terlebih dahulu!\n";
-							  	} else {
-							  		pilihmakan(username, kantinhead, &porsihead, &porsitail);
-							  	}
-				  			} else if(submenu == 2){
-				  				//rezky
-				  			} else if(submenu == 3){
+				  			pilihkantin(kantinhead, &indeks, &porsihead, &porsitail, username);
+//				  			cout << "\n1. Pesan Makanan\n";
+//							cout << "\n2. Cari Menu\n";  
+//				  			cout << "\n2. Urutkan Menu\n"; 
+//							cin >> submenu;
+//				  			if(submenu == 1){
+//				  				if(username == "N/A"){
+//							  		cout << "\n Silahkan login terlebih dahulu!\n";
+//							  		Sleep(500);
+//							  	} else {
+//							  		pilihmakan(username, kantinhead, &porsihead, &porsitail);
+//							  	}
+//				  			} else if(submenu == 2){
+//				  				// Tambahkan fungsi pencarian disini
+				  			if(submenu == 3){
 				  			string pilihansort;
 				  				cout <<"\n================================ PILIH YANG MANA MAU DIURUT =================================";
 						  	cout <<"\n1. Makanan\n";
@@ -1476,6 +1589,7 @@ int main() {
 				  			}
 							system("cls");
 				  			break;
+
 				  		case 5:system("cls");
 				  			totall = tagihan(username, head, &indeks, porsihead);
 				  			cout << "Total tagihan: " << totall << endl;
@@ -1491,89 +1605,104 @@ int main() {
 				  			simpankantin(kantinhead);
 				  			simpanporsi(porsihead);
 				  			system("cls"); cout << "Terima Kasih telah menggunakan program kami."; exit(0);
-			  			}				
-					}
+			  		}				
 				}
+			}
 
 		} else if(mode == "admin"){
-		  	cout << "MENU ADMIN\n"; 
-		  	cout << "1. Daftar PC\n";
-		  	cout << "2. Daftar User\n";
-		  	cout << "3. Daftar Menu Makanan\n";
-		  	cout << "4. Daftar Antrian Pesanan\n";
-		  	cout << "5. Keluar Mode Admin\n";
-		  	cout << "pilihan: "; cin >> menu;
-		  	switch (menu){
-		  		case 1:system("cls");
-		  			tampil(head, &indeks);
-		  			cout << "\n1. Tambah PC\n";
-		  			cout << "2. Ubah PC\n";
-		  			cout << "3. Hapus PC\n";
-		  			cout << "4. Batal\n";
-		  			cin >> submenu;
-		  			if(submenu == 1){
-		  				tambahpc(&head, &tail, &indeks);
-		  			} else if(submenu == 2){
-		  				ubahpc(head);
-		  			} else if(submenu == 3){
-		  				hapuspc(&head, &indeks);
-		  			} else if(submenu == 4){
-		  				break;
-		  			}
-		  			system("cls");
-		  			break;
-		  		case 2:system("cls");
-		  			daftarakun(head, porsihead, &indeks);
-		  			cout << "\n1. Urutkan pengguna\n";
-		  			cout << "\n2. Cari pengguna\n";
-		  			cout << "\n3. Ubah status pengguna\n";
-		  			cout << "\n4. Hapus pengguna\n";
-		  			cin >> submenu;
-		  			if(submenu == 1){
-				  			string pilihan;
-				  			cout <<"\n================================ PILIH PENGURUTAN =================================";
-	  						cout <<"\n1. Ascending";
-	 						cout <<"\n2. Descending";
-	  						cout <<"\n\nMasukkan Pilihan : ";
-	  						cin >> pilihan;
-	  						if(pilihan == "1"){
-							ascquickSort(kantinhead);
-							}
-							if(pilihan == "2"){
-								desquickSort(kantinhead);
-							}
-								tampilkantin(kantinhead, &indeks);
-				  			
-							system("cls");
-				  			break;
+			
+			int cari, x=1, y=5, item=1, item2, x2, y2, n; bool run;
+//			gotoXY(x, y); cout << ">";
+			while(true){
+				gotoXY(0, 0); cout <<  "______________________________\n";
+				gotoXY(0, 1); cout <<  "|                            |\n";
+			  	gotoXY(0, 2); cout <<  "|   	  MENU ADMIN         |\n";
+			  	gotoXY(0, 3); cout <<  "|____________________________|\n";
+			  	gotoXY(0, 4); cout <<  "|                            |\n";
+				gotoXY(0, 5); cout <<  "|  1. Daftar PC              |\n";
+			  	gotoXY(0, 6); cout <<  "|  2. Daftar User            |\n";
+			  	gotoXY(0, 7); cout <<  "|  3. Daftar Menu Makanan    |\n";
+			  	gotoXY(0, 8); cout <<  "|  4. Daftar Antrian Pesanan |\n";
+			  	gotoXY(0, 9); cout <<  "|  5. Keluar Mode Admin      |\n";
+			  	gotoXY(0, 10); cout << "|____________________________|\n";
+			  	
+				color(240);
+				if(item == 1){
+					gotoXY(6, 5); cout << "Daftar PC";
+				} else if(item == 2){
+					gotoXY(6, 6); cout << "Daftar User";
+				} else if(item == 3){ 
+					gotoXY(6, 7); cout << "Daftar Menu Makanan";
+				} else if(item == 4){
+					gotoXY(6, 8); cout << "Daftar Antrian Pesanan";
+				} else if(item == 5){
+					gotoXY(6, 9); cout << "Keluar Mode Admin";
+				} else if(item == 6){
+					gotoXY(6, 10); cout << "Log Out";
+				} else if(item == 7){
+					gotoXY(6, 11); cout << "Keluar";
+				} color(7);
 				
-		  			} else if(submenu ==2 ){
-		  				//fungsi pencarian user
-		  			} else if (submenu == 3){
-		  				ubahuser();
-		  			} else if(submenu == 4){
-		  				hapususer();
-		  			}
-		  			
-		  			break;
-		  		case 3:system("cls");
-		  			tampilkantin(kantinhead, &indeks);
-		  			cout << "\n1. Tambah Menu\n";
-		  			cout << "2. Ubah Menu\n";
-		  			cout << "3. Hapus Menu\n";
-		  			cout << "4. Urutkan Menu\n";
-		  			cout << "5. Cari Menu\n";
-		  			cout << "6. Keluar";
-
-
-		  			cin >> submenu;
-		  			if(submenu == 1){
-		  				tambahmenu(&kantinhead, &kantintail, &indeksmenu);
-		  			} else if(submenu == 2){
-		  				ubahmenu(kantinhead);
-		  			} else if(submenu == 3){
-		  				hapusmenu(&kantinhead, &indeksmenu);
-		  			} else if(submenu == 4){
+				system("pause>nul");
+				if(GetAsyncKeyState(VK_DOWN) && item != 5){
+					item+=1;		
+				}
+				if(GetAsyncKeyState(VK_UP) && item != 1){
+					item-=1;			
+				}
+				if(GetAsyncKeyState(VK_RETURN) & 0x8000) {
+				  	switch (item){
+				  		case 1:system("cls");
+				  			tampil(head, &indeks);
+				  			cout << "\n1. Tambah PC\n";
+				  			cout << "2. Ubah PC\n";
+				  			cout << "3. Hapus PC\n";
+				  			cout << "4. Batal\n";
+				  			cin >> submenu;
+				  			if(submenu == 1){
+				  				tambahpc(&head, &tail, &indeks);
+				  			} else if(submenu == 2){
+				  				ubahpc(head);
+				  			} else if(submenu == 3){
+				  				hapuspc(&head, &indeks);
+				  			} else if(submenu == 4){
+				  				break;
+				  			}
+				  			system("cls");
+				  			break;
+				  		case 2:system("cls");
+				  			daftarakun(head, porsihead, &indeks);
+				  			cout << "\n1. Urutkan pengguna\n";
+				  			cout << "\n2. Cari pengguna\n";
+				  			cout << "\n3. Ubah status pengguna\n";
+				  			cout << "\n4. Hapus pengguna\n";
+				  			cin >> submenu;
+				  			if(submenu == 1){
+				  				//fungsi pengurutan user
+				  			} else if(submenu ==2 ){
+				  				//fungsi pencarian user
+				  			} else if (submenu == 3){
+				  				ubahuser();
+				  			} else if(submenu == 4){
+				  				hapususer();
+				  			}
+				  			break;
+				  		case 3:system("cls");
+				  			tampilkantin(kantinhead, &indeks);
+				  			cout << "\n1. Tambah Menu\n";
+				  			cout << "2. Ubah Menu\n";
+				  			cout << "3. Hapus Menu\n";
+				  			cout << "4. Urutkan Menu\n";
+				  			cout << "5. Carikan Menu\n";
+				  			cout << "6. Batal\n";
+				  			cin >> submenu;
+				  			if(submenu == 1){
+				  				tambahmenu(&kantinhead, &kantintail, &indeksmenu);
+				  			} else if(submenu == 2){
+				  				ubahmenu(kantinhead);
+				  			} else if(submenu == 3){
+				  				hapusmenu(&kantinhead, &indeksmenu);
+} else if(submenu == 4){
 				  			cout << "\n1. Pesan Makanan\n";
 							cout << "\n2. Cari Menu\n";  
 				  			cout << "\n3. Urutkan Menu\n"; 
@@ -1590,13 +1719,13 @@ int main() {
 				  				//rezky
 				  			} else if(submenu == 3){
 				  			string pilihansort;
-				  				cout <<"\n================================ PILIH YANG MANA MAU DIURUT =================================";
+				  			
+							cout <<"\n================================ PILIH YANG MANA MAU DIURUT =================================";
 						  	cout <<"\n1. Makanan\n";
 						 	cout <<"\n2. Harga\n";
 						 	cout <<"\n\n Pilih : ";
 						  	cin >> pilihansort;
 						  	system("cls");
-						  	
 						  	
 						  	if (pilihansort == "1"){
 						  		att = "makanan";
@@ -1621,30 +1750,32 @@ int main() {
 				  			}
 							system("cls");
 				  			break;
-		  			} else if(submenu == 5){
-		  				//taruh fungsi pencarian disini
-		  			} else if(submenu == 6){
-		  				break;
-		  			}system("cls");
-		  			break;
-		  		case 4:
-		  			system("cls");
-		  			antrimakan(porsihead);
-		  			cout << "1. Layani Antrian\n";
-		  			cout << "2. Kembali\n";
-		  			cin >> submenu;
-		  			if(submenu == 1){
-		  				dequeue(&porsihead);
-		  				cout << "Makanan diantar ke antrian pertama\n"; Sleep(500);
-		  			}
-		  			system("cls");
-		  			break;
-		  		case 5:system("cls");
-		  			mode = "user"; username = "N/A";
-		  			login(&mode , &username);
-		  			system("cls");
-		  			break;
-		  	}			  	
+				  			} else if(submenu == 5){
+				  				//taruh funsi pencarian disni
+				  			} else if(submenu == 6){
+				  				break;
+				  			}system("cls");
+				  			break;
+				  		case 4:
+				  			system("cls");
+				  			antrimakan(porsihead);
+				  			cout << "1. Layani Antrian\n";
+				  			cout << "2. Kembali\n";
+				  			cin >> submenu;
+				  			if(submenu == 1){
+				  				dequeue(&porsihead);
+				  				cout << "Makanan diantar ke antrian pertama\n"; Sleep(500);
+				  			}
+				  			system("cls");
+				  			break;
+				  		case 5:system("cls");
+				  			mode = "user"; username = "N/A";
+				  			login(&mode , &username);
+				  			system("cls");
+				  			break;
+				  	}					
+				}
+			}
 		} else {
 			system("cls");
 			simpanakun();
